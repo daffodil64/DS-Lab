@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    struct node *next;
+    int vertex;
+};
+
+typedef struct node *GNODE;
+GNODE graph[20] = {NULL};  // initialize all to NULL
+
+// Print adjacency list
+void print(int *N) {
+    for (int i = 1; i <= *N; i++) {
+        if (graph[i]) {
+            printf("%d=>", i);
+            GNODE temp = graph[i];
+            while (temp != NULL) {
+                printf("%d\t", temp->vertex);
+                temp = temp->next;
+            }
+            printf("\n");
+        }
+    }
+}void insertVertex(int *N) {
+    (*N)++;
+    printf("Vertex %d inserted.\n", *N);
+    graph[*N] = NULL;
+}
+void insertEdge(int *N) {
+    int s, d;
+    printf("Enter the source vertex of the edge : ");
+    scanf("%d", &s);
+    printf("Enter the destination vertex of the edge : ");
+    scanf("%d", &d);
+    if (s > *N || d > *N) {
+        printf("Invalid vertices.\n");
+        return;
+    }
+    GNODE newNode = (GNODE)malloc(sizeof(struct node));
+    newNode->vertex = d;
+    newNode->next = NULL;
+    if (graph[s] == NULL) {
+        graph[s] = newNode;
+    } else {
+        GNODE temp = graph[s];
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newNode;
+    }
+
+    printf("After inserting edge the adjacency list is : \n");
+    print(N);
+}
+void deleteVertex(int *N) {
+    printf("Enter the vertex to be deleted : ");
+    scanf("%d", &v);
+    if (v > *N || graph[v] == NULL) {
+        printf("After deleting vertex the adjacency list is : \n");
+        return;
+    }
+
+    // Remove all edges from vertex v
+    GNODE temp = graph[v];
+    while (temp) {
+        GNODE del = temp;
+        temp = temp->next;
+        free(del);
+    }
+    graph[v] = NULL;
+
+    // Remove all edges to vertex v
+    for (int i = 1; i <= *N; i++) {
+        GNODE curr = graph[i], prev = NULL;
+        while (curr) {
+            if (curr->vertex == v) {
+                if (prev == NULL) {
+                    graph[i] = curr->next;
+                } else {
+                    prev->next = curr->next;
+				} free(curr);
+                break;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+printf("After deleting vertex the adjacency list is : \n");
+    print(N);
+}
+
+// Delete an edge
+void deleteEdge(int *N) {
+    int s, d;
+    printf("Enter the source vertex of the edge : ");
+    scanf("%d", &s);
+    printf("Enter the destination vertex of the edge : ");
+    scanf("%d", &d);
+    if (s > *N || graph[s] == NULL) {
+        printf("Invalid source vertex.\n");
+        return;
+    }
+
+    GNODE curr = graph[s], prev = NULL;
+    while (curr != NULL && curr->vertex != d) {
+        prev = curr;
+        curr = curr->next;
+	}    if (curr == NULL) {
+        printf("Edge not found.\n");
+        return;
+    }
+
+    if (prev == NULL)
+        graph[s] = curr->next;
+    else
+        prev->next = curr->next;
+
+    free(curr);
+
+    printf("After deleting edge the adjacency list is : \n");
+    print(N);
+}
