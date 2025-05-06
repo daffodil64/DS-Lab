@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for the BST Node
+struct node {
+    int key;
+    struct node *left, *right;
+};
+
+// Function to create a new node
+struct node *newNode(int item) {
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->key = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+// Inorder Traversal (LNR) using recursion
+void inorder(struct node *root) {
+    if (root != NULL) {
+        inorder(root->left); // Traverse left
+        printf("%d ", root->key); // Traverse root
+        inorder(root->right); // Traverse right
+    }
+}
+void preorder(struct node *root) {
+    if (root != NULL) {
+        printf("%d ", root->key); // Traverse root
+        preorder(root->left); // Traverse left
+        preorder(root->right); // Traverse right
+    }
+}
+
+// Find the node with the minimum value in the tree (leftmost node)
+struct node *minValueNode(struct node *node) {
+    struct node *current = node;
+    while (current && current->left != NULL)
+        current = current->left;
+    return current;
+}
+
+// Insert a new node with the given key into the BST
+struct node *insert(struct node *node, int key) {
+    // If the tree is empty, create a new node
+    if (node == NULL)
+        return newNode(key);
+if (key < node->key) {
+        node->left = insert(node->left, key); // Insert in left subtree
+    } else if (key > node->key) {
+        node->right = insert(node->right, key); // Insert in right subtree
+	}
+    return node; // Return the unchanged node pointer
+}
+
+struct node *deleteNode(struct node *root, int key) {
+    if (root == NULL) {
+        return root; // Tree is empty
+    }
+
+    if (key < root->key) {
+        root->left = deleteNode(root->left, key);
+    }
+    else if (key > root->key) {
+        root->right = deleteNode(root->right, key);
+    }else {
+        if (root->left == NULL) {
+if (key < node->key) {
+        node->left = insert(node->left, key); // Insert in left subtree
+    } else if (key > node->key) {
+        node->right = insert(node->right, key); // Insert in right subtree
+	}
+    return node; // Return the unchanged node pointer
+}
+
+struct node *deleteNode(struct node *root, int key) {
+    if (root == NULL) {
+        return root; // Tree is empty
+    }
+
+    if (key < root->key) {
+        root->left = deleteNode(root->left, key);
+    }
+    else if (key > root->key) {
+        root->right = deleteNode(root->right, key);
+    }else {
+        if (root->left == NULL) {
+printf("Enter how many nodes you want to insert in BST :");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter the value: ");
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    // Perform inorder and preorder traversal
+    printf("Inorder traversal(Always gives ascending order): ");
+    inorder(root);
+    printf("\n");
+
+    printf("Preorder traversal: ");
+    preorder(root);
+    printf("\n");
+
+    // Delete a node
+    printf("Enter the data to delete: ");
+    scanf("%d", &deleteValue);
+    root = deleteNode(root, deleteValue);
+ printf("After deleting %d\n", deleteValue);    printf("Inorder traversal: ");    inorder(root);
+    printf("\n");
+
+    printf("Preorder traversal: ");
+    preorder(root);
+    printf("\n");
+
+    return 0;
+}
